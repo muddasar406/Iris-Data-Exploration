@@ -4,8 +4,15 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-if not os.path.exists("images"):
-    os.makedirs("images")
+# Defining Base Directory
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+DATA_DIR = os.path.join(BASE_DIR, "data")
+IMG_DIR = os.path.join(BASE_DIR, "images")
+
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(IMG_DIR, exist_ok=True)
 
 # 1. Load Dataset
 print("Loading dataset...")
@@ -44,7 +51,7 @@ sns.scatterplot(x='sepal_length',
                 data=iris)
 
 plt.title("Sepal Length vs Petal Length")
-plt.savefig("images/scatter_plot.png")
+plt.savefig(os.path.join(IMG_DIR, "scatter_plot.png"))
 plt.show()
 
 # 4. Histograms
@@ -52,7 +59,7 @@ plt.show()
 
 iris.hist(figsize=(8,6))
 plt.suptitle("Feature Distributions")
-plt.savefig("images/histograms.png")
+plt.savefig(os.path.join(IMG_DIR, "histograms.png"))
 plt.show()
 
 # 5. Box Plot
@@ -60,13 +67,27 @@ plt.show()
 plt.figure(figsize=(8,5))
 sns.boxplot(data=iris)
 plt.title("Box Plot of Iris Features")
-plt.savefig("images/boxplot.png")
+plt.savefig(os.path.join(IMG_DIR, "boxplot.png"))
 plt.show()
 
 # 6. Pairplot (Advanced)
 
 sns.pairplot(iris, hue='species')
-plt.savefig("images/pairplot.png")
+plt.savefig(os.path.join(IMG_DIR, "pairplot.png"))
 plt.show()
 
 print("\nAnalysis Complete. Plots saved in images folder.")
+
+# ------------------------------
+# 7. Correlation Heatmap
+# ------------------------------
+
+print("Generating correlation heatmap...")
+
+plt.figure(figsize=(6,4))
+sns.heatmap(iris.corr(numeric_only=True), annot=True, cmap="coolwarm")
+plt.title("Correlation Heatmap")
+plt.savefig(os.path.join(IMG_DIR, "correlation_heatmap.png"))
+plt.show()
+
+print("Heatmap done")
